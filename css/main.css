@@ -1,1 +1,389 @@
-/* You CSS goes in here */
+/* ================================
+   GLOBAL
+================================ */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #e6eef5;
+    background-image: url("images/background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* ================================
+   TITLE
+================================ */
+.main-title {
+    text-align: center;
+    font-size: 32px;
+    margin: 20px 0 30px;
+    color: #0f172a;
+}
+
+/* ================================
+   MAIN LAYOUT
+================================ */
+#mainContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 95%;
+    padding: 20px;
+}
+
+/* ================================
+   PANEL ROW
+================================ */
+#panelRow {
+    display: flex;
+    gap: 20px;
+}
+
+/* ================================
+   PANELS
+================================ */
+.panel {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 32%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* ================================
+   INPUT PANEL
+================================ */
+.input-panel h2 {
+    margin-top: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.form-grid label {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.form-grid input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #cbd5f5;
+    outline: none;
+}
+
+.form-grid input:focus {
+    border-color: #2563eb;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+.btn-group {
+    text-align: center;
+    margin-top: 8px;
+}
+
+button {
+    padding: 8px 16px;
+    margin: 4px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* ================================
+   PROCESSING PANEL
+================================ */
+.processing-panel ol {
+    padding-left: 18px;
+    color: #334155;
+}
+
+#passProcessingArea b {
+    display: block;
+    margin: 12px 0 6px;
+    font-size: 16px;
+    color: #1e293b;
+}
+
+/* ================================
+   NUMBER ROW
+================================ */
+.number-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+/* ================================
+   NUMBER BOX
+================================ */
+/* ================================
+   NUMBER BOX
+================================ */
+.number-box {
+    position: relative;
+    display: flex;
+    gap: 2px;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* ================================
+   DIGIT (INLINE, NO SHIFT)
+================================ */
+.digit {
+    position: relative;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* ================================
+   FLOATING ARROW (NO LAYOUT IMPACT)
+================================ */
+.arrow {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    color: #2563eb;
+    animation: arrowFloat 1.2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* ================================
+   ARROW ANIMATION
+================================ */
+@keyframes arrowFloat {
+    0%   { transform: translate(-50%, 0); }
+    50%  { transform: translate(-50%, -6px); }
+    100% { transform: translate(-50%, 0); }
+}
+
+
+
+/* ================================
+   RESULT PANEL
+================================ */
+.output-panel h2 {
+    margin-top: 0;
+}
+
+#output div {
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    border-left: 4px solid #2563eb;
+    background: #f1f5f9;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 1000px) {
+    #panelRow {
+        flex-direction: column;
+    }
+
+    .panel {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .digit {
+        font-size: 18px;
+    }
+    .arrow {
+        font-size: 14px;
+    }
+}
+
+
+
+/* ================================
+   PSEUDOCODE ALIGNMENT FIX
+================================ */
+.pseudocode-box {
+    margin-top: 15px;
+    padding: 12px 14px;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    border-left: 5px solid #2563eb;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+.pseudocode-box h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: #1e3a8a;
+}
+
+.pseudocode-box pre {
+    margin: 0;
+    padding: 0;                /* ✅ important */
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre;          /* keeps formatting */
+    text-align: left;          /* ✅ aligned */
+    color: #111827;
+}
+.pseudocode-box pre {
+    tab-size: 4;
+}
+.pseudo {
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre;
+}
+
+.pseudo span {
+    margin-left: 20px;
+}
+
+.pseudocode-content {
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.pseudo-line {
+    padding: 4px 8px;
+    margin: 2px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.pseudo-highlight {
+    background: linear-gradient(90deg, #fef3c7 0%, #fde68a 100%);
+    border-left: 4px solid #f59e0b;
+    font-weight: 600;
+    color: #92400e;
+    transform: translateX(4px);
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+
+
+
+
+
+/* ================================
+   BUCKET GRID LAYOUT - 10 COLUMNS
+================================ */
+/* ================================
+   BUCKET GRID - 2 ROWS (5 + 5)
+================================ */
+.bucket-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 👈 5 per row */
+    gap: 12px;
+    margin-top: 20px;
+}
+
+
+.bucket-cell {
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    border-radius: 8px;
+    padding: 10px 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.bucket-cell:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.bucket-header {
+    font-weight: 700;
+    color: #1e3a8a;
+    font-size: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #3b82f6;
+    text-align: center;
+}
+
+.bucket-content {
+    font-size: 11px;
+    color: #1e293b;
+    text-align: center;
+    min-height: 20px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.digit.zero {
+    color: #94a3b8;
+}
+.bucket-item {
+       font-weight: 600;
+    margin: 2px 0;
+    letter-spacing: 1px;
+    font-family: monospace;
+}
+
+.digit {
+    display: inline-block;
+    min-width: 0.6em;
+    text-align: center;
+}
+
+.active-digit {
+    color: #ff9800;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(255, 152, 0, 0.8);
+}
+
+
+/* ================================
+   RESULT DIGIT HIGHLIGHTING
+================================ */
+.highlight-digit {
+    color: #605d5b;
+    font-weight: 900;
+    background: linear-gradient(90deg, #fef3c7 0%, #fde68a  100%);
+    padding: 1px 2px;
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgba(196, 190, 175, 0.5);
+    display: inline-block;
+}/* You CSS goes in here */
