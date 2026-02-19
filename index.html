@@ -1,79 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Radix Sort</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Practical: Deployment of Application on Cloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --surface: #111827;
+      --card: #1a2236;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f59e0b;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(0,229,255,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob1 { width: 500px; height: 500px; background: var(--accent2); top: -100px; left: -100px; }
+    .blob2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; right: -100px; }
+
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 60px 40px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 5px 16px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      animation: fadeDown 0.7s ease 0.1s both;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin-inline: auto;
+      animation: fadeDown 0.7s ease 0.2s both;
+    }
+
+    /* Section */
+    section {
+      position: relative;
+      z-index: 10;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 40px 60px;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Objective box */
+    .objective-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 28px 32px;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text);
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+
+    /* Steps grid */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      animation: fadeUp 0.5s ease both;
+    }
+    .step-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+    .step-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    .step-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .step-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .step-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .step-icon {
+      font-size: 2rem;
+      margin-bottom: 14px;
+    }
+
+    /* Code block */
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 28px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: #c9d1d9;
+      overflow-x: auto;
+    }
+
+    .code-block .comment { color: #6a9955; }
+    .code-block .keyword { color: var(--accent); }
+    .code-block .string { color: var(--accent3); }
+    .code-block .cmd { color: #ce9178; }
+
+    /* Tools grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .tool-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .tool-pill:hover {
+      border-color: var(--accent2);
+      transform: translateY(-3px);
+    }
+    .tool-pill .tool-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .tool-pill .tool-name { font-weight: 700; font-size: 0.9rem; }
+    .tool-pill .tool-desc { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+    /* Result table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--muted);
+    }
+    tr:hover td { background: rgba(0,229,255,0.03); color: var(--text); }
+    .tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+    }
+    .tag-success { background: rgba(16,185,129,0.15); color: #10b981; }
+    .tag-info { background: rgba(0,229,255,0.1); color: var(--accent); }
+
+    /* Conclusion */
+    .conclusion {
+      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,229,255,0.1));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+    }
+    .conclusion h3 { font-size: 1.5rem; margin-bottom: 12px; }
+    .conclusion p { color: var(--muted); max-width: 600px; margin: 0 auto; line-height: 1.8; }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 30px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
 
-<h1 class="main-title">Radix Sort</h1>
- 
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
 
-<div id="mainContainer">
-    <div class="container">
-        <div id="panelRow">
+<!-- Header -->
+<header>
+  <div class="badge">Practical Lab</div>
+  <h1>Deployment of Application<br/><span>on Cloud</span></h1>
+  <p class="subtitle">A step-by-step practical guide to deploying a static web application using GitHub Pages and cloud hosting platforms.</p>
+</header>
 
-<!-- ================= INPUT PANEL ================= -->
-<!-- INPUT PANEL -->
-<div class="panel input-panel">
-    <h2>Input</h2>
+<!-- Objective -->
+<section>
+  <div class="section-title">01 — Objective</div>
+  <div class="objective-box">
+    To understand and practically implement the process of deploying a web application on a cloud platform. This practical covers setting up a repository, configuring deployment settings, and making the application publicly accessible via a cloud-hosted URL using <strong>GitHub Pages</strong> as the cloud deployment platform.
+  </div>
+</section>
 
-    <div class="form-grid">
-        <label>Enter numbers</label>
-        <input type="text" id="inputNumbers" value="170,45,75,90,802,24,2,66">
-
-        <label>Total count</label>
-        <input type="number" id="count" value="8">
+<!-- Tools Required -->
+<section>
+  <div class="section-title">02 — Tools & Technologies Required</div>
+  <div class="tools-grid">
+    <div class="tool-pill">
+      <div class="tool-icon">🐙</div>
+      <div class="tool-name">GitHub</div>
+      <div class="tool-desc">Version control & cloud host</div>
     </div>
-
-    <div class="btn-group">
-        <button id="randomBtn">Generate Random</button>
-        <button id="startBtn">Start</button>
-        <button id="resetBtn">Reset</button>
+    <div class="tool-pill">
+      <div class="tool-icon">🌐</div>
+      <div class="tool-name">GitHub Pages</div>
+      <div class="tool-desc">Free static site hosting</div>
     </div>
-
-    <div class="btn-group" style="margin-top:10px;">
-        <button id="backBtn">⬅ Back</button>
-        <button id="nextBtn">Next ➡</button>
+    <div class="tool-pill">
+      <div class="tool-icon">📝</div>
+      <div class="tool-name">HTML/CSS/JS</div>
+      <div class="tool-desc">Web application files</div>
     </div>
-
-    <div class="btn-group" style="margin-top:10px;">
-        <button id="autoRunBtn" style="background:#16a34a;">▶ Auto Run</button>
+    <div class="tool-pill">
+      <div class="tool-icon">⚙️</div>
+      <div class="tool-name">GitHub Actions</div>
+      <div class="tool-desc">CI/CD automation workflow</div>
     </div>
-
-    <!-- PSEUDOCODE BOX -->
-    <div class="pseudocode-box" style="margin-top:20px;">
-        <h3>Radix Sort Algorithm</h3>
-        <div id="pseudocodeContainer" class="pseudocode-content">
-            <div class="pseudo-line">for digit = 0 to maxDigits - 1:</div>
-            <div class="pseudo-line">    create 10 empty buckets (0-9)</div>
-            <div class="pseudo-line">    for each number in array:</div>
-            <div class="pseudo-line">        digitValue = (number / 10^digit) mod 10</div>
-            <div class="pseudo-line">        insert number into bucket[digitValue]</div>
-            <div class="pseudo-line">    collect numbers from buckets 0 to 9</div>
-        </div>
+    <div class="tool-pill">
+      <div class="tool-icon">💻</div>
+      <div class="tool-name">Web Browser</div>
+      <div class="tool-desc">Chrome / Firefox</div>
     </div>
-</div>
-
-<!-- ================= PROCESSING PANEL ================= -->
-<div class="panel processing-panel">
-    <h2>Processing</h2>
-    <div id="passProcessingArea"></div>
-</div>
-
-<!-- ================= RESULT PANEL ================= -->
-<div class="panel output-panel">
-    <h2>Result</h2>
-    <div id="output"></div>
-    <div id="summary"></div>
-</div>
-
-        </div>
+    <div class="tool-pill">
+      <div class="tool-icon">☁️</div>
+      <div class="tool-name">Cloud Platform</div>
+      <div class="tool-desc">GitHub's cloud servers</div>
     </div>
-</div>
+  </div>
+</section>
 
-<script src="script.js"></script>
+<!-- Steps -->
+<section>
+  <div class="section-title">03 — Step-by-Step Procedure</div>
+  <div class="steps-grid">
+    <div class="step-card" style="animation-delay:0.1s">
+      <div class="step-icon">📁</div>
+      <div class="step-num">STEP 01</div>
+      <h3>Create a GitHub Repository</h3>
+      <p>Log in to GitHub and create a new public repository. Name it appropriately (e.g., <code>my-app</code>). Initialize it with a README file.</p>
+    </div>
+    <div class="step-card" style="animation-delay:0.2s">
+      <div class="step-icon">⬆️</div>
+      <div class="step-num">STEP 02</div>
+      <h3>Upload Application Files</h3>
+      <p>Upload your web application files — <code>index.html</code>, CSS folder, JS folder, and image assets — to the root of the main branch.</p>
+    </div>
+    <div class="step-card" style="animation-delay:0.3s">
+      <div class="step-icon">⚙️</div>
+      <div class="step-num">STEP 03</div>
+      <h3>Configure GitHub Pages</h3>
+      <p>Go to <strong>Settings → Pages</strong>. Under Source, select "GitHub Actions" or "Deploy from branch → main". Save the settings.</p>
+    </div>
+    <div class="step-card" style="animation-delay:0.4s">
+      <div class="step-icon">🔄</div>
+      <div class="step-num">STEP 04</div>
+      <h3>Add GitHub Actions Workflow</h3>
+      <p>Create a <code>.github/workflows/static.yml</code> file to automate deployment whenever code is pushed to the main branch.</p>
+    </div>
+    <div class="step-card" style="animation-delay:0.5s">
+      <div class="step-icon">🚀</div>
+      <div class="step-num">STEP 05</div>
+      <h3>Trigger Deployment</h3>
+      <p>Commit and push your changes. GitHub Actions will automatically build and deploy your app. Monitor progress under the <strong>Actions</strong> tab.</p>
+    </div>
+    <div class="step-card" style="animation-delay:0.6s">
+      <div class="step-icon">✅</div>
+      <div class="step-num">STEP 06</div>
+      <h3>Access the Live URL</h3>
+      <p>Once deployed, your app is live at:<br/><code>https://username.github.io/repo-name</code><br/>Share this URL to access your cloud-deployed app.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Code -->
+<section>
+  <div class="section-title">04 — GitHub Actions Workflow Code</div>
+  <div class="code-block">
+    <span class="comment"># .github/workflows/static.yml</span><br/>
+    <span class="keyword">name:</span> <span class="string">Deploy static content to Pages</span><br/><br/>
+    <span class="keyword">on:</span><br/>
+    &nbsp;&nbsp;<span class="keyword">push:</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">branches:</span> <span class="string">["main"]</span><br/>
+    &nbsp;&nbsp;<span class="keyword">workflow_dispatch:</span><br/><br/>
+    <span class="keyword">permissions:</span><br/>
+    &nbsp;&nbsp;<span class="keyword">contents:</span> <span class="string">read</span><br/>
+    &nbsp;&nbsp;<span class="keyword">pages:</span> <span class="string">write</span><br/>
+    &nbsp;&nbsp;<span class="keyword">id-token:</span> <span class="string">write</span><br/><br/>
+    <span class="keyword">jobs:</span><br/>
+    &nbsp;&nbsp;<span class="keyword">deploy:</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">environment:</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">name:</span> <span class="string">github-pages</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">runs-on:</span> <span class="string">ubuntu-latest</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">steps:</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmd">- uses: actions/checkout@v3</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmd">- uses: actions/configure-pages@v3</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmd">- uses: actions/upload-pages-artifact@v2</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">with:</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">path:</span> <span class="string">'.'</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmd">- uses: actions/deploy-pages@v2</span>
+  </div>
+</section>
+
+<!-- Observations -->
+<section>
+  <div class="section-title">05 — Observations & Results</div>
+  <div class="code-block" style="padding:0; overflow:hidden;">
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Details</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Platform Used</td>
+          <td>GitHub Pages (Cloud Hosting)</td>
+          <td><span class="tag tag-success">✔ Cloud</span></td>
+        </tr>
+        <tr>
+          <td>Deployment Type</td>
+          <td>Static Website via GitHub Actions CI/CD</td>
+          <td><span class="tag tag-success">✔ Automated</span></td>
+        </tr>
+        <tr>
+          <td>Access URL</td>
+          <td>https://username.github.io/repo-name</td>
+          <td><span class="tag tag-info">Public</span></td>
+        </tr>
+        <tr>
+          <td>Deployment Time</td>
+          <td>Approx. 2–5 minutes after push</td>
+          <td><span class="tag tag-success">✔ Fast</span></td>
+        </tr>
+        <tr>
+          <td>Cost</td>
+          <td>Free for public repositories</td>
+          <td><span class="tag tag-success">✔ Free</span></td>
+        </tr>
+        <tr>
+          <td>Files Required</td>
+          <td>index.html in root of main branch</td>
+          <td><span class="tag tag-success">✔ Verified</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Conclusion -->
+<section>
+  <div class="section-title">06 — Conclusion</div>
+  <div class="conclusion">
+    <h3>Practical Successfully Completed ✅</h3>
+    <p>
+      In this practical, we successfully deployed a web application on the cloud using <strong>GitHub Pages</strong>. We learned how to create a repository, upload application files, configure cloud deployment settings, and automate the deployment process using <strong>GitHub Actions</strong>. The application was made publicly accessible via a cloud-hosted URL, demonstrating the fundamental concepts of cloud deployment in a real-world scenario.
+    </p>
+  </div>
+</section>
+
+<footer>
+  Practical Report &nbsp;|&nbsp; Cloud Computing Lab &nbsp;|&nbsp; Deployment of Application on Cloud
+</footer>
+
 </body>
 </html>
