@@ -1,13 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<!-- Add CSS at the head of HTML file -->
-    <link rel="stylesheet" href="./css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radix Sort</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-		<!-- Your code goes here-->
 
-	<!-- Add JS at the bottom of HTML file --> 
-        <script src="./js/main.js"></script>
+<h1 class="main-title">Radix Sort</h1>
+ 
+
+<div id="mainContainer">
+    <div class="container">
+        <div id="panelRow">
+
+<!-- ================= INPUT PANEL ================= -->
+<!-- INPUT PANEL -->
+<div class="panel input-panel">
+    <h2>Input</h2>
+
+    <div class="form-grid">
+        <label>Enter numbers</label>
+        <input type="text" id="inputNumbers" value="170,45,75,90,802,24,2,66">
+
+        <label>Total count</label>
+        <input type="number" id="count" value="8">
+    </div>
+
+    <div class="btn-group">
+        <button id="randomBtn">Generate Random</button>
+        <button id="startBtn">Start</button>
+        <button id="resetBtn">Reset</button>
+    </div>
+
+    <div class="btn-group" style="margin-top:10px;">
+        <button id="backBtn">⬅ Back</button>
+        <button id="nextBtn">Next ➡</button>
+    </div>
+
+    <div class="btn-group" style="margin-top:10px;">
+        <button id="autoRunBtn" style="background:#16a34a;">▶ Auto Run</button>
+    </div>
+
+    <!-- PSEUDOCODE BOX -->
+    <div class="pseudocode-box" style="margin-top:20px;">
+        <h3>Radix Sort Algorithm</h3>
+        <div id="pseudocodeContainer" class="pseudocode-content">
+            <div class="pseudo-line">for digit = 0 to maxDigits - 1:</div>
+            <div class="pseudo-line">    create 10 empty buckets (0-9)</div>
+            <div class="pseudo-line">    for each number in array:</div>
+            <div class="pseudo-line">        digitValue = (number / 10^digit) mod 10</div>
+            <div class="pseudo-line">        insert number into bucket[digitValue]</div>
+            <div class="pseudo-line">    collect numbers from buckets 0 to 9</div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= PROCESSING PANEL ================= -->
+<div class="panel processing-panel">
+    <h2>Processing</h2>
+    <div id="passProcessingArea"></div>
+</div>
+
+<!-- ================= RESULT PANEL ================= -->
+<div class="panel output-panel">
+    <h2>Result</h2>
+    <div id="output"></div>
+    <div id="summary"></div>
+</div>
+
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
